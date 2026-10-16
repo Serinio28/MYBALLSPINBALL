@@ -1,0 +1,6 @@
+{
+  "dependencies": [
+    "raylib",
+    "box2d"
+  ]
+}
