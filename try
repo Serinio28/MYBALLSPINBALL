@@ -1,0 +1,80 @@
+#include "raylib.h"
+#include <box2d/box2d.h>
+
+// Factor de conversión: 30 píxeles equivalen a 1 metro en Box2D
+const float METER2PIXEL = 30.0f;
+const float PIXEL2METER = 1.0f / METER2PIXEL;
+
+int main() {
+    // 1. Inicializar ventana de Raylib
+    const int screenWidth = 450;
+    const int screenHeight = 800;
+    InitWindow(screenWidth, screenHeight, "Pinball Physics - Box2D & Raylib");
+    SetTargetFPS(60);
+
+    // 2. Crear el Mundo de Box2D con gravedad hacia abajo
+    b2Vec2 gravity(0.0f, 9.8f);
+    b2World world(gravity);
+
+    // 3. Crear las Paredes de la Caja (Cuerpo Estático)
+    b2BodyDef wallBodyDef;
+    wallBodyDef.position.Set(0.0f, 0.0f);
+    b2Body* wallBody = world.CreateBody(&wallBodyDef);
+
+    // Usamos líneas o cadenas para delimitar los bordes internos de la pantalla
+    // Ancho: 450px -> 15 metros, Alto: 800px -> 26.66 metros
+    b2EdgeShape wallShape;
+    
+    // Pared Izquierda
+    wallShape.Set(b2Vec2(1.0f, 1.0f), b2Vec2(1.0f, 25.0f));
+    wallBody->CreateFixture(&wallShape, 0.0f);
+
+    // Pared Derecha
+    wallShape.Set(b2Vec2(14.0f, 1.0f), b2Vec2(14.0f, 25.0f));
+    wallBody->CreateFixture(&wallShape, 0.0f);
+
+    // Techo
+    wallShape.Set(b2Vec2(1.0f, 1.0f), b2Vec2(14.0f, 1.0f));
+    wallBody->CreateFixture(&wallShape, 0.0f);
+
+    // 4. Crear la Bola (Cuerpo Dinámico)
+    b2BodyDef ballBodyDef;
+    ballBodyDef.type = b2_dynamicBody;
+    ballBodyDef.position.Set(7.5f, 3.0f); // Posición inicial dentro de la caja
+    b2Body* ballBody = world.CreateBody(&ballBodyDef);
+
+    b2CircleShape ballShape;
+    ballShape.m_radius = 0.5f; // Radio de medio metro (15 píxeles)
+
+    b2FixtureDef ballFixtureDef;
+    ballFixtureDef.shape = &ballShape;
+    ballFixtureDef.density = 1.0f;
+    ballFixtureDef.friction = 0.2f;
+    ballFixtureDef.restitution = 0.8f; // ¡Alta elasticidad para el rebote del pinball!
+    ballBody->CreateFixture(&ballFixtureDef);
+
+    // Bucle principal del juego
+    while (!WindowShouldClose()) {
+        // Actualizar simulación de Box2D (Time step de 1/60 segundos, 8 iteraciones de velocidad, 3 de posición)
+        world.Step(1.0f / 60.0f, 8, 3);
+
+        // Obtener posición actual de la bola desde Box2D
+        b2Vec2 ballPos = ballBody->GetPosition();
+
+        // Dibujo con Raylib
+        BeginDrawing();
+        ClearBackground(DARKGRAY);
+
+        // Dibujar las paredes del tablero (convertidas a píxeles)
+        DrawRectangleLines(1 * METER2PIXEL, 1 * METER2PIXEL, 13 * METER2PIXEL, 24 * METER2PIXEL, LIGHTGRAY);
+
+        // Dibujar la bola del pinball
+        DrawCircle((int)(ballPos.x * METER2PIXEL), (int)(ballPos.y * METER2PIXEL), ballShape.m_radius * METER2PIXEL, RED);
+
+        DrawText("Simulacion Box2D 2.4.1 + Raylib", 20, 20, 18, RAYWHITE);
+        EndDrawing();
+    }
+
+    CloseWindow();
+    return 0;
+}
