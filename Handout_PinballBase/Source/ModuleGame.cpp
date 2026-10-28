@@ -420,6 +420,7 @@ update_status ModuleGame::Update()
 	// Flippers work even in game over, it is more fun
 	flipper_left->Flip(IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_A));
 	flipper_right->Flip(IsKeyDown(KEY_RIGHT) || IsKeyDown(KEY_D));
+
 	if (IsKeyDown(KEY_E)) ball->body->ApplyAngularImpulse(5, true);
 	if (IsKeyDown(KEY_Q)) ball->body->ApplyAngularImpulse(-5, true);
 	if (state == STATE_GAME_OVER)
@@ -468,8 +469,7 @@ void ModuleGame::Draw()
 	const Color wall_color = Color{ 120, 200, 255, 255 };
 
 	// Background of the table and the launch lane
-	DrawRectangle((int)X0, 0, (int)W, (int)H, Color{ 18, 20, 38, 255 });
-	DrawRectangle(lane_left_x, TY(0.30f), TX(1.0f) - lane_left_x, lane_bottom_y - TY(0.30f), Color{ 30, 34, 64, 255 });
+	DrawRectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT,DARKGREEN);
 
 	// Walls
 	for (const std::vector<Vector2>& line : wall_lines)
@@ -481,7 +481,7 @@ void ModuleGame::Draw()
 	// Slingshots
 	for (Slingshot& s : slingshots)
 	{
-		Color c = s.flash > 0 ? YELLOW : Color{ 230, 60, 90, 255 };
+		Color c = s.flash > 0 ? YELLOW : RED;
 		DrawTriangle(s.p[0], s.p[1], s.p[2], c);
 		DrawTriangle(s.p[0], s.p[2], s.p[1], c); // the other winding order, raylib culls one of them
 		if (s.flash > 0) --s.flash;
@@ -490,17 +490,10 @@ void ModuleGame::Draw()
 	// Bumpers
 	for (Bumper& b : bumpers)
 	{
-		DrawCircle(b.x, b.y, (float)b.radius, b.flash > 0 ? YELLOW : Color{ 255, 140, 0, 255 });
-		DrawCircle(b.x, b.y, b.radius * 0.6f, b.flash > 0 ? WHITE : Color{ 200, 80, 0, 255 });
+		DrawCircle(b.x, b.y, (float)b.radius, b.flash > 0 ? YELLOW : GREEN);
+		DrawCircle(b.x, b.y, b.radius * 0.6f, b.flash > 0 ? WHITE : BLUE);
 		DrawCircleLines(b.x, b.y, (float)b.radius, WHITE);
 		if (b.flash > 0) --b.flash;
-	}
-
-	// Rollovers
-	for (const Rollover& r : rollovers)
-	{
-		DrawCircle(r.x, r.y, (float)r.radius, r.lit ? Color{ 80, 255, 120, 255 } : Color{ 50, 60, 90, 255 });
-		DrawCircleLines(r.x, r.y, (float)r.radius, WHITE);
 	}
 
 	// Flippers: a thick line from the pivot to the tip
@@ -514,19 +507,16 @@ void ModuleGame::Draw()
 		Vector2 pivot = { (float)px, (float)py };
 		Vector2 tip = { pivot.x + directions[i] * flipper_length * cosf(a), pivot.y + directions[i] * flipper_length * sinf(a) };
 
-		DrawLineEx(pivot, tip, (float)(flipper_base + flipper_tip), Color{ 240, 240, 240, 255 });
-		DrawCircle((int)pivot.x, (int)pivot.y, (float)flipper_base, Color{ 240, 240, 240, 255 });
-		DrawCircle((int)tip.x, (int)tip.y, (float)flipper_tip, Color{ 240, 240, 240, 255 });
+		DrawLineEx(pivot, tip, (float)(flipper_base + flipper_tip), BLACK);
+		DrawCircle((int)pivot.x, (int)pivot.y, (float)flipper_base, BLACK);
+		DrawCircle((int)tip.x, (int)tip.y, (float)flipper_tip, BLACK);
 	}
 
-	// Plunger: the knob goes down while charging
-	{
-		int lane_w = TX(1.0f) - lane_left_x;
-		int travel = (int)H - lane_bottom_y - 8;
-		int knob_y = lane_bottom_y + (int)(charge * travel);
-		DrawRectangle(lane_left_x + 8, lane_bottom_y, lane_w - 16, knob_y - lane_bottom_y, GRAY);
-		DrawRectangle(lane_left_x + 4, knob_y, lane_w - 8, 8, Color{ 200, 60, 60, 255 });
-	}
+	//Función para que lancemos la pelota para arriba la primera vez que le damos.
+	int lane_w = TX(1.0f) - lane_left_x;
+	int travel = (int)H - lane_bottom_y - 8;
+	int knob_y = lane_bottom_y + (int)(charge * travel);
+	DrawRectangle(lane_left_x + 4, knob_y, lane_w - 8, 8, RED);
 
 	// Ball
 	if (ball != NULL)
@@ -536,24 +526,6 @@ void ModuleGame::Draw()
 		DrawCircle(bx, by, (float)ball_radius, LIGHTGRAY);
 		DrawCircle(bx - ball_radius / 3, by - ball_radius / 3, ball_radius / 3.0f, WHITE);
 	}
-
-	// HUD
-	DrawText(TextFormat("SCORE  %d", score), 20, 20, 28, WHITE);
-	DrawText(TextFormat("BALLS  %d", balls_left), 20, 56, 28, WHITE);
-	DrawText(TextFormat("EXTRA BALL AT  %d", next_extra_ball_score), 20, 92, 16, LIGHTGRAY);
-
-	int rx = TX(1.0f) + 20;
-	DrawText("LEFT / A   left flipper", rx, 20, 16, LIGHTGRAY);
-	DrawText("RIGHT / D  right flipper", rx, 44, 16, LIGHTGRAY);
-	DrawText("DOWN / SPACE  hold and", rx, 68, 16, LIGHTGRAY);
-	DrawText("release to launch", rx, 88, 16, LIGHTGRAY);
-	DrawText("F1  physics debug", rx, 116, 16, LIGHTGRAY);
-
-	// Power bar
-	DrawText("POWER", 20, (int)H - 60, 16, LIGHTGRAY);
-	DrawRectangle(20, (int)H - 40, 150, 16, Color{ 40, 40, 60, 255 });
-	DrawRectangle(20, (int)H - 40, (int)(150.0f * charge), 16, Color{ 255, 200, 40, 255 });
-	DrawRectangleLines(20, (int)H - 40, 150, 16, WHITE);
 
 	// Messages
 	if (message_timer > 0.0f)
