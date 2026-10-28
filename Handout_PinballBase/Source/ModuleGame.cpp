@@ -420,7 +420,8 @@ update_status ModuleGame::Update()
 	// Flippers work even in game over, it is more fun
 	flipper_left->Flip(IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_A));
 	flipper_right->Flip(IsKeyDown(KEY_RIGHT) || IsKeyDown(KEY_D));
-
+	if (IsKeyDown(KEY_E)) ball->body->ApplyAngularImpulse(5, true);
+	if (IsKeyDown(KEY_Q)) ball->body->ApplyAngularImpulse(-5, true);
 	if (state == STATE_GAME_OVER)
 	{
 		if (IsKeyPressed(KEY_ENTER))
