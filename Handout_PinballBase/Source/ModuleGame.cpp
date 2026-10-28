@@ -548,6 +548,8 @@ void ModuleGame::Draw()
 
 	}
 
+	DrawText(TextFormat("SCORE  %d", score), 1100, 20, 28, YELLOW);
+
 	// Messages
 	if (message_timer > 0.0f)
 	{
