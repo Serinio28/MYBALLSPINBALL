@@ -504,6 +504,15 @@ void ModuleGame::Draw()
 		if (b.flash > 0) --b.flash;
 	}
 
+	// Rollovers
+	for (const Rollover& r : rollovers)
+	{
+		DrawCircle(r.x, r.y, (float)r.radius, r.lit ? Color{ 80, 255, 120, 255 } : Color{ 50, 60, 90, 255 });
+		DrawCircleLines(r.x, r.y, (float)r.radius, WHITE);
+	}
+
+
+
 	// Flippers: a thick line from the pivot to the tip
 	PhysBody* flippers[2] = { flipper_left, flipper_right };
 	float directions[2] = { 1.0f, -1.0f };
