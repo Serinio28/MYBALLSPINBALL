@@ -424,8 +424,8 @@ update_status ModuleGame::Update()
 	flipper_left->Flip(IsKeyDown(KEY_LEFT));
 	flipper_right->Flip(IsKeyDown(KEY_RIGHT));
 
-	if (IsKeyDown(KEY_E)) ball->body->ApplyAngularImpulse(5, true);
-	if (IsKeyDown(KEY_Q)) ball->body->ApplyAngularImpulse(-5, true);
+	if (IsKeyDown(KEY_E)) ball->body->ApplyAngularImpulse(10, true);
+	if (IsKeyDown(KEY_Q)) ball->body->ApplyAngularImpulse(-10, true);
 	if (state == STATE_GAME_OVER)
 	{
 		if (IsKeyPressed(KEY_ENTER))
@@ -542,10 +542,10 @@ void ModuleGame::Draw()
 		float br;
 		br = ball->GetRotation();
 		ball->GetPosition(ballx, bally);
-		DrawCircle(ballx,bally,(float)ball_radius,RED);
-		DrawTexture(steelball,ballx,bally,WHITE);
-		DrawTexturePro(steelball, { 0, 0, (float)steelball.width, (float)steelball.height }, { (float)ballx-ball_radius, (float)bally-ball_radius, (float)ball_radius*2, (float)ball_radius*2 }, { (float)ball_radius, (float)ball_radius }, br, WHITE); ///////////bola d'acer
-
+		DrawCircle(ballx, bally, (float)ball_radius - 0.2, GREEN);
+		DrawCircleLines(ballx, bally, (float)ball_radius, DARKGREEN);
+		DrawCircleSectorLines({ (float)ballx, (float)bally }, (float)ball_radius, br, br+90, 2, DARKGREEN);
+		DrawCircleSectorLines({ (float)ballx, (float)bally }, (float)ball_radius, br-90, br-180, 2, DARKGREEN);
 	}
 
 	DrawText(TextFormat("SCORE  %d", score), 1100, 20, 28, YELLOW);
