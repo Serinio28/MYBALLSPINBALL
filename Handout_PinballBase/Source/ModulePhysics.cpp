@@ -8,7 +8,7 @@
 #include <math.h>
 
 static const float FLIPPER_SPEED = 8.0f;        // rad/s
-static const float FLIPPER_TORQUE = 800.0f;
+static const float FLIPPER_TORQUE = 8000000.0f;
 static const float DEG_TO_RAD_F = 3.14159265f / 180.0f;
 
 ModulePhysics::ModulePhysics(Application* app, bool start_enabled) : Module(app, start_enabled)
@@ -427,7 +427,7 @@ PhysBody* ModulePhysics::CreateFlipper(int x, int y, int length, int base_half, 
 
 	b2FixtureDef fixture;
 	fixture.shape = &shape;
-	fixture.density = 1.0f;
+	fixture.density = 10000.0f;
 	fixture.friction = 0.4f;
 	fixture.restitution = 0.2f;
 	b->CreateFixture(&fixture);
