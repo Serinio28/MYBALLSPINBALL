@@ -7,6 +7,7 @@
 
 #include <algorithm>
 #include <math.h>
+using namespace std;
 
 namespace
 {
@@ -315,9 +316,9 @@ void ModuleGame::UpdateLauncher(float dt)
 		return;
 	}
 
-	if (IsKeyDown(KEY_DOWN) || IsKeyDown(KEY_SPACE))
+	if (IsKeyDown(KEY_DOWN))
 	{
-		charge = std::min(1.0f, charge + dt / CHARGE_TIME);
+		charge = min(1.0f, charge + dt / CHARGE_TIME);
 	}
 	else if (charge > 0.0f)
 	{
@@ -418,8 +419,8 @@ update_status ModuleGame::Update()
 	float dt = GetFrameTime();
 
 	// Flippers work even in game over, it is more fun
-	flipper_left->Flip(IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_A));
-	flipper_right->Flip(IsKeyDown(KEY_RIGHT) || IsKeyDown(KEY_D));
+	flipper_left->Flip(IsKeyDown(KEY_LEFT));
+	flipper_right->Flip(IsKeyDown(KEY_RIGHT));
 
 	if (IsKeyDown(KEY_E)) ball->body->ApplyAngularImpulse(5, true);
 	if (IsKeyDown(KEY_Q)) ball->body->ApplyAngularImpulse(-5, true);
@@ -468,8 +469,13 @@ void ModuleGame::Draw()
 {
 	const Color wall_color = Color{ 120, 200, 255, 255 };
 
-	// Background of the table and the launch lane
-	DrawRectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT,DARKGREEN);
+	// Esto es lo mejor que se me ha ocurrido para pintar el césped.
+	DrawRectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT,GREEN);
+	DrawRectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT / 8, DARKGREEN);
+	DrawRectangle(0, 150, SCREEN_WIDTH, SCREEN_HEIGHT / 8, DARKGREEN);
+	DrawRectangle(0, 300, SCREEN_WIDTH, SCREEN_HEIGHT / 8, DARKGREEN);
+	DrawRectangle(0, 450, SCREEN_WIDTH, SCREEN_HEIGHT / 8, DARKGREEN);
+	DrawRectangle(0, 600, SCREEN_WIDTH, SCREEN_HEIGHT / 8, DARKGREEN);
 
 	// Walls
 	for (const std::vector<Vector2>& line : wall_lines)
