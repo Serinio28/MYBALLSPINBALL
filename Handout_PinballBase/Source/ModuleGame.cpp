@@ -533,7 +533,7 @@ void ModuleGame::Draw()
 		float br;
 		br = ball->GetRotation();
 		ball->GetPosition(bx, by);
-		DrawTexturePro(steelball, { 0, 0, (float)steelball.width, (float)steelball.height }, { (float)bx, (float)by, (float)ball_radius*2, (float)ball_radius*2 }, { 50, 50 }, br, WHITE); ///////////bola d'acer
+		DrawTexturePro(steelball, { 0, 0, (float)steelball.width, (float)steelball.height }, { (float)bx-ball_radius, (float)by-ball_radius, (float)ball_radius*2, (float)ball_radius*2 }, { (float)ball_radius, (float)ball_radius }, br, WHITE); ///////////bola d'acer
 	}
 
 	// Messages
