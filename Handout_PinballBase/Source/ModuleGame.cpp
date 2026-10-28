@@ -513,7 +513,7 @@ void ModuleGame::Draw()
 
 
 
-	// Flippers: a thick line from the pivot to the tip
+	// Flippers
 	PhysBody* flippers[2] = { flipper_left, flipper_right };
 	float directions[2] = { 1.0f, -1.0f };
 	for (int i = 0; i < 2; ++i)
@@ -538,13 +538,13 @@ void ModuleGame::Draw()
 	// Ball
 	if (ball != NULL)
 	{
-		int bx, by;
+		int ballx, bally;
 		float br;
 		br = ball->GetRotation();
-		ball->GetPosition(bx, by);
-		DrawCircle(bx,by,(float)ball_radius,RED);
-		DrawTexture(steelball,bx,by,WHITE);
-		DrawTexturePro(steelball, { 0, 0, (float)steelball.width, (float)steelball.height }, { (float)bx-ball_radius, (float)by-ball_radius, (float)ball_radius*2, (float)ball_radius*2 }, { (float)ball_radius, (float)ball_radius }, br, WHITE); ///////////bola d'acer
+		ball->GetPosition(ballx, bally);
+		DrawCircle(ballx,bally,(float)ball_radius,RED);
+		DrawTexture(steelball,ballx,bally,WHITE);
+		DrawTexturePro(steelball, { 0, 0, (float)steelball.width, (float)steelball.height }, { (float)ballx-ball_radius, (float)bally-ball_radius, (float)ball_radius*2, (float)ball_radius*2 }, { (float)ball_radius, (float)ball_radius }, br, WHITE); ///////////bola d'acer
 
 	}
 
@@ -559,9 +559,9 @@ void ModuleGame::Draw()
 
 	if (state == STATE_GAME_OVER)
 	{
-		const char* t1 = "GAME OVER";
-		const char* t2 = "Press ENTER to play again";
-		DrawText(t1, (int)(X0 + W / 2) - MeasureText(t1, 48) / 2, TY(0.55f), 48, RED);
-		DrawText(t2, (int)(X0 + W / 2) - MeasureText(t2, 20) / 2, TY(0.55f) + 60, 20, WHITE);
+
+		DrawText(TextFormat("GAME OVER"), SCREEN_WIDTH/3.5, SCREEN_HEIGHT/2.5, 100, RED);
+		DrawText(TextFormat("Enter para volver a empezar"), SCREEN_WIDTH / 4.5, SCREEN_HEIGHT /1.75, 50, WHITE);
+
 	}
 }
