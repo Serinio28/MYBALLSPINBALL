@@ -10,6 +10,8 @@
 static const float FLIPPER_SPEED = 8.0f;        // rad/s
 static const float FLIPPER_TORQUE = 8000000.0f;
 static const float DEG_TO_RAD_F = 3.14159265f / 180.0f;
+float GRAVITY_X = 0.0f;
+float GRAVITY_Y = -10.0f;
 
 ModulePhysics::ModulePhysics(Application* app, bool start_enabled) : Module(app, start_enabled)
 {

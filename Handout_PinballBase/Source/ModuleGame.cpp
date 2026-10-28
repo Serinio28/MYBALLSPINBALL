@@ -426,6 +426,8 @@ update_status ModuleGame::Update()
 
 	if (IsKeyDown(KEY_E)) ball->body->ApplyAngularImpulse(10, true);
 	if (IsKeyDown(KEY_Q)) ball->body->ApplyAngularImpulse(-10, true);
+	//if (IsKeyPressed(KEY_ONE)) GRAVITY_Y = 0;
+	//if (IsKeyPressed(KEY_TWO)) GRAVITY_Y -= 1;
 	if (state == STATE_GAME_OVER)
 	{
 		if (IsKeyPressed(KEY_ENTER))
