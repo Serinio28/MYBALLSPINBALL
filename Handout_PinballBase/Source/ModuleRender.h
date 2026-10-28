@@ -3,7 +3,6 @@
 #include "Globals.h"
 
 #include <limits.h>
-
 class ModuleRender : public Module
 {
 public:

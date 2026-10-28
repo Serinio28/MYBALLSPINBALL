@@ -8,6 +8,8 @@
 #include <algorithm>
 #include <math.h>
 
+Texture2D steelball = LoadTexture("Steel_Ball.png");
+
 namespace
 {
 	const int   START_BALLS = 3;
@@ -532,9 +534,10 @@ void ModuleGame::Draw()
 	if (ball != NULL)
 	{
 		int bx, by;
+		float br;
+		br = ball->GetRotation();
 		ball->GetPosition(bx, by);
-		DrawCircle(bx, by, (float)ball_radius, LIGHTGRAY);
-		DrawCircle(bx - ball_radius / 3, by - ball_radius / 3, ball_radius / 3.0f, WHITE);
+		DrawTexturePro(steelball, { 0, 0, (float)steelball.width, (float)steelball.height }, { (float)bx, (float)by, (float)ball_radius*2, (float)ball_radius*2 }, { 50, 50 }, br, WHITE); ///////////bola d'acer
 	}
 
 	// HUD
