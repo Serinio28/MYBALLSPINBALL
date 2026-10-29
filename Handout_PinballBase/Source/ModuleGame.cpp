@@ -468,13 +468,11 @@ void ModuleGame::Draw()
 			DrawLineEx(line[i], line[i + 1], 4.0f, WHITE);
 	}
 
-	// Slingshots
+	// Slingshots (Los triángulos)
 	for (Slingshot& s : slingshots)
 	{
-		Color c = s.flash > 0 ? YELLOW : RED;
-		DrawTriangle(s.p[0], s.p[1], s.p[2], c);
-		DrawTriangle(s.p[0], s.p[2], s.p[1], c); // the other winding order, raylib culls one of them
-		if (s.flash > 0) --s.flash;
+		DrawTriangle(s.p[0], s.p[1], s.p[2], RED);
+		DrawTriangle(s.p[0], s.p[2], s.p[1], RED);
 	}
 
 	// Bumpers
@@ -489,11 +487,9 @@ void ModuleGame::Draw()
 	// Rollovers
 	for (const Rollover& r : rollovers)
 	{
-		DrawCircle(r.x, r.y, (float)r.radius, r.tocado ? Color{ 80, 255, 120, 255 } : Color{ 50, 60, 90, 255 });
+		DrawCircle(r.x, r.y, (float)r.radius, r.tocado ? GREEN : BLACK);
 		DrawCircleLines(r.x, r.y, (float)r.radius, WHITE);
 	}
-
-
 
 	// Flippers
 	PhysBody* flippers[2] = { flipper_left, flipper_right };
