@@ -8,7 +8,7 @@
 #include "raylib.h"
 #include <vector>
 #include <string>
-
+using namespace std;
 class PhysBody;
 
 struct Bumper
@@ -32,7 +32,7 @@ struct Rollover
 {
 	PhysBody* body;
 	int x, y, radius;
-	bool lit;
+	bool tocado;
 };
 
 enum GameState
@@ -90,11 +90,11 @@ private:
 	PhysBody* drain;
 	PhysBody* flipper_left;
 	PhysBody* flipper_right;
-	std::vector<PhysBody*> walls;
-	std::vector<std::vector<Vector2>> wall_lines; // same walls, to draw them
-	std::vector<Bumper> bumpers;
-	std::vector<Slingshot> slingshots;
-	std::vector<Rollover> rollovers;
+	vector<PhysBody*> walls;
+	vector<vector<Vector2>> wall_lines; //Es el vector de arriba pero sirve para dibujar.
+	vector<Bumper> bumpers;
+	vector<Slingshot> slingshots;
+	vector<Rollover> rollovers;
 
 	// Game state
 	GameState state;
@@ -104,6 +104,6 @@ private:
 	bool ball_drained;
 	float charge;          // plunger 0..1
 	float launch_top_speed; // speed needed to reach the top of the table
-	std::string message;
+	string message;
 	float message_timer;
 };

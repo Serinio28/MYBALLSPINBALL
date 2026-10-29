@@ -240,7 +240,7 @@ void ModuleGame::AddRollover(float u, float v)
 	r.x = TX(u);
 	r.y = TY(v);
 	r.radius = (int)(W * 0.03f);
-	r.lit = false;
+	r.tocado = false;
 	r.body = App->physics->CreateCircleSensor(r.x, r.y, r.radius);
 	rollovers.push_back(r);
 }
@@ -259,7 +259,7 @@ void ModuleGame::NewGame()
 	message_timer = 0.0f;
 
 	for (Rollover& r : rollovers)
-		r.lit = false;
+		r.tocado = false;
 
 	SpawnBall();
 }
@@ -364,44 +364,25 @@ void ModuleGame::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 		}
 	}
 
-	for (Slingshot& s : slingshots)
-	{
-		if (s.body == bodyB)
-		{
-			// Only kick if the ball touches the kick face (not the other sides of the triangle)
-			float rx = (float)bx - s.p[0].x;
-			float ry = (float)by - s.p[0].y;
-			float side = rx * s.normal.x + ry * s.normal.y;
-			float along = rx * s.dir.x + ry * s.dir.y;
-
-			if (side > 0.0f && along >= 0.0f && along <= s.length)
-			{
-				ball->AddVelocity(s.normal.x * SLING_KICK, s.normal.y * SLING_KICK);
-				s.flash = 6;
-				AddScore(10);
-			}
-			return;
-		}
-	}
-
+	//Si toca un Rollover suma puntos y si toca los tres te da una pelota nueva y más puntos extra.
 	for (Rollover& r : rollovers)
 	{
 		if (r.body == bodyB)
 		{
-			if (!r.lit)
+			if (!r.tocado)
 			{
-				r.lit = true;
+				r.tocado = true;
 				AddScore(50);
 
-				bool all_lit = true;
+				bool todos_tocados = true;
 				for (Rollover& other : rollovers)
-					all_lit = all_lit && other.lit;
+					todos_tocados = todos_tocados && other.tocado;
 
-				// All three lit: extra ball
-				if (all_lit)
+
+				if (todos_tocados)
 				{
 					for (Rollover& other : rollovers)
-						other.lit = false;
+						other.tocado = false;
 
 					++balls_left;
 					AddScore(500);
@@ -471,7 +452,6 @@ update_status ModuleGame::Update()
 
 void ModuleGame::Draw()
 {
-	const Color wall_color = Color{ 120, 200, 255, 255 };
 
 	// Esto es lo mejor que se me ha ocurrido para pintar el césped.
 	DrawRectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT,GREEN);
@@ -482,10 +462,10 @@ void ModuleGame::Draw()
 	DrawRectangle(0, 600, SCREEN_WIDTH, SCREEN_HEIGHT / 8, DARKGREEN);
 
 	// Walls
-	for (const std::vector<Vector2>& line : wall_lines)
+	for (const vector<Vector2>& line : wall_lines)
 	{
 		for (size_t i = 0; i + 1 < line.size(); ++i)
-			DrawLineEx(line[i], line[i + 1], 4.0f, wall_color);
+			DrawLineEx(line[i], line[i + 1], 4.0f, WHITE);
 	}
 
 	// Slingshots
@@ -509,7 +489,7 @@ void ModuleGame::Draw()
 	// Rollovers
 	for (const Rollover& r : rollovers)
 	{
-		DrawCircle(r.x, r.y, (float)r.radius, r.lit ? Color{ 80, 255, 120, 255 } : Color{ 50, 60, 90, 255 });
+		DrawCircle(r.x, r.y, (float)r.radius, r.tocado ? Color{ 80, 255, 120, 255 } : Color{ 50, 60, 90, 255 });
 		DrawCircleLines(r.x, r.y, (float)r.radius, WHITE);
 	}
 
