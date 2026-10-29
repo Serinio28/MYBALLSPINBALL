@@ -268,7 +268,7 @@ void ModuleGame::SpawnBall()
 {
 	ball = App->physics->CreateCircle(lane_center_x, lane_bottom_y - ball_radius - 1, ball_radius, b2_dynamicBody, 0.35f);
 	ball->listener = this;
-	ball->body->SetBullet(true);            // avoids going through walls at high speed
+	ball->body->SetBullet(true);          
 	ball->body->SetSleepingAllowed(false);
 	charge = 0.0f;
 }
@@ -301,7 +301,7 @@ void ModuleGame::ShowMessage(const char* text)
 	message_timer = 2.0f;
 }
 
-// Hold DOWN / SPACE to charge the plunger, release to launch the ball
+
 void ModuleGame::UpdateLauncher(float dt)
 {
 	if (ball == NULL)
@@ -393,13 +393,12 @@ void ModuleGame::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 	}
 }
 
-// Update ------------------------------------------------------------------------------
+
 
 update_status ModuleGame::Update()
 {
 	float dt = GetFrameTime();
 
-	// Flippers work even in game over, it is more fun
 	flipper_left->Flip(IsKeyDown(KEY_LEFT));
 	flipper_right->Flip(IsKeyDown(KEY_RIGHT));
 
