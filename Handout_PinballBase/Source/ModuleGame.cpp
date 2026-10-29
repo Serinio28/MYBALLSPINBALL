@@ -291,7 +291,6 @@ void ModuleGame::AddScore(int points)
 	{
 		next_extra_ball_score += EXTRA_BALL_EVERY;
 		++balls_left;
-		ShowMessage("EXTRA BALL!");
 		App->audio->PlayFx(bonus_fx);
 	}
 }
@@ -386,7 +385,6 @@ void ModuleGame::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 
 					++balls_left;
 					AddScore(500);
-					ShowMessage("EXTRA BALL!");
 					App->audio->PlayFx(bonus_fx);
 				}
 			}
@@ -526,14 +524,10 @@ void ModuleGame::Draw()
 		DrawCircleSectorLines({ (float)ballx, (float)bally }, (float)ball_radius, br-90, br-180, 2, DARKGREEN);
 	}
 
+	
 	DrawText(TextFormat("SCORE  %d", score), 1100, 20, 28, YELLOW);
+	DrawText(TextFormat("Pelotas Restantes:  %d", balls_left), 1000, 50, 25, WHITE);
 
-	// Messages
-	if (message_timer > 0.0f)
-	{
-		int w = MeasureText(message.c_str(), 36);
-		DrawText(message.c_str(), (int)(X0 + W / 2) - w / 2, TY(0.5f), 36, GREEN);
-	}
 
 	if (state == STATE_GAME_OVER)
 	{
