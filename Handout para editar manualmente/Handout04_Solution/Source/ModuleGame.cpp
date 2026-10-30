@@ -95,28 +95,28 @@ class Muro : public PhysicEntity
 public:
 	// Pivot 0, 0
 	static constexpr int muro[44] = {
-		213, 461,
-		262, 461,
-		280, 447,
-		295, 428,
-		301, 412,
-		304, 400,
-		304, 66,
-		297, 44,
-		290, 28,
-		280, 19,
-		261, 8,
-		47, 8,
-		30, 19,
-		15, 37,
-		5, 59,
-		5, 399,
-		9, 418,
-		16, 433,
-		23, 446,
-		38, 457,
-		50, 461,
-		89, 461
+		10, 780,
+		10, 320,
+		335, 10,
+		660, 320,
+		660, 780,
+		450, 1000,
+		220, 1000,
+		25, 765,
+		24, 766,
+		23, 767,
+		22, 768,
+		21, 769,
+		20, 770,
+		19, 771,
+		18, 772,
+		17, 773,
+		16, 774,
+		15, 775,
+		14, 776,
+		13, 777,
+		12, 778,
+		11, 779
 	};
 
 	Muro(ModulePhysics* physics, int _x, int _y, Texture2D _texture)
@@ -260,6 +260,7 @@ update_status ModuleGame::Update()
 	// All draw functions ------------------------------------------------------
 	ClearBackground(BLACK);
 	DrawRectangle(0, 0, 1000, 1000, BLACK);
+	DrawRectangle(0, 10, 990, 980, DARKGRAY);
 	DrawTexture(rick, 0, 0, WHITE);
 	
 
