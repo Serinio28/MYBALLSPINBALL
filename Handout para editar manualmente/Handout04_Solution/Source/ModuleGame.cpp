@@ -367,8 +367,8 @@ void ModuleGame::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 	boom.Normalize();
 	if (bodyB->body->GetGravityScale() == 69)
 	{
-		bodyA->body->SetLinearVelocity({ 0, 0 });
-		bodyA->body->SetLinearVelocity(40*boom);
+		bodyA->body->SetLinearVelocity(40 * boom);
+		//bodyA->body->SetLinearVelocity({ 0, 0 });
 		//bodyA->body->ApplyLinearImpulseToCenter(30*boom, true);
 	}
 
