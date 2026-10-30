@@ -161,6 +161,7 @@ bool ModuleGame::Start()
 	circle = LoadTexture("Assets/wheel.png");
 	box = LoadTexture("Assets/crate.png");
 	rick = LoadTexture("Assets/rick_head.png");
+	backG = LoadTexture("Assets/steel_ballground.jpeg");
 
 	bonus_fx = App->audio->LoadFx("Assets/bonus.wav");
 
@@ -184,6 +185,7 @@ bool ModuleGame::CleanUp()
 	UnloadTexture(circle);
 	UnloadTexture(box);
 	UnloadTexture(rick);
+	UnloadTexture(BackG);
 
 	return true;
 }

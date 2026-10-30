@@ -34,6 +34,7 @@ public:
 	Texture2D circle;
 	Texture2D box;
 	Texture2D rick;
+	Texture2D BackG;
 
 	uint32 bonus_fx;
 
