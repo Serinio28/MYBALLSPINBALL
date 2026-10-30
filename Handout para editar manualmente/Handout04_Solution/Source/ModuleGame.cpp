@@ -362,11 +362,14 @@ void ModuleGame::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 		}
 		
 	}
+	b2Vec2 boom = bodyA->body->GetPosition() - bodyB->body->GetPosition();
+	boom.Normalize();
+	if (bodyB->body->GetGravityScale() == 69)
+	{
+		bodyA->body->ApplyLinearImpulseToCenter(100*boom, true);
+	}
 
-
-
-	if (bodyB == sensor)
-		return;
+	if (bodyB == sensor) return;
 
 	App->audio->PlayFx(bonus_fx);
 }
