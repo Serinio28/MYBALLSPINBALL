@@ -57,6 +57,8 @@ public:
 		Rectangle dest = { (float)x, (float)y, (float)texture.width, (float)texture.height };
 		Vector2 origin = { (float)texture.width / 2.0f, (float)texture.height / 2.0f };
 		DrawTexturePro(texture, source, dest, origin, body->GetRotation() * RAD2DEG, tint);
+		if (IsKeyDown(KEY_E)) body->body->ApplyAngularImpulse(10, true);
+		if (IsKeyDown(KEY_Q)) body->body->ApplyAngularImpulse(-10, true);
 	}
 
 private:
@@ -255,9 +257,9 @@ update_status ModuleGame::Update()
 		entities.push_back(c);
 	}
 
-	if (IsKeyPressed(KEY_TWO))
+	if (IsKeyPressed(KEY_E))
 	{
-		entities.push_back(new Box(App->physics, GetMouseX(), GetMouseY(), box));
+		
 	}
 
 
