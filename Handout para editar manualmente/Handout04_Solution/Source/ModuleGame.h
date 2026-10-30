@@ -31,10 +31,11 @@ public:
 
 	std::vector<PhysicEntity*> entities;
 
+	Texture2D BackG;
 	Texture2D circle;
 	Texture2D box;
 	Texture2D rick;
-	Texture2D BackG;
+	
 
 	uint32 bonus_fx;
 

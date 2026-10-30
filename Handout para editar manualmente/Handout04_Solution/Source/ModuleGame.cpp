@@ -159,15 +159,15 @@ bool ModuleGame::Start()
 
 	App->renderer->camera.x = App->renderer->camera.y = 0;
 
+	BackG = LoadTexture("Assets/steel_ballground.jpeg");
 	circle = LoadTexture("Assets/wheel.png");
 	box = LoadTexture("Assets/crate.png");
 	rick = LoadTexture("Assets/rick_head.png");
-	BackG = LoadTexture("Assets/steel_ballground.jpeg");
-
+	
 	bonus_fx = App->audio->LoadFx("Assets/bonus.wav");
 
 	// Sensor at the bottom of the screen
-	sensor = App->physics->CreateRectangleSensor(SCREEN_WIDTH / 2, SCREEN_HEIGHT, SCREEN_WIDTH / 2, 25);
+	sensor = App->physics->CreateRectangleSensor(SCREEN_WIDTH , SCREEN_HEIGHT*1.5, SCREEN_WIDTH , 50);
 	sensor->listener = this;
 
 	return ret;
@@ -183,10 +183,11 @@ bool ModuleGame::CleanUp()
 	App->physics->DestroyBody(sensor);
 	sensor = NULL;
 
+	UnloadTexture(BackG);
 	UnloadTexture(circle);
 	UnloadTexture(box);
 	UnloadTexture(rick);
-	UnloadTexture(BackG);
+	
 
 	return true;
 }
@@ -227,10 +228,6 @@ update_status ModuleGame::Update()
 		entities.push_back(new Box(App->physics, GetMouseX(), GetMouseY(), box));
 	}
 
-	if (!WindowShouldClose())
-	{
-		entities.push_back(new Muro(App->physics, 0, 0, rick));
-	}
 
 	if (IsKeyPressed(KEY_BACKSPACE))
 	{
@@ -252,6 +249,7 @@ update_status ModuleGame::Update()
 
 
 	// All draw functions ------------------------------------------------------
+	DrawTexture(rick, 0, 0, WHITE);
 
 	for (PhysicEntity* entity : entities)
 	{
@@ -269,6 +267,25 @@ update_status ModuleGame::Update()
 			}
 		}
 	}
+	
+	DrawText(TextFormat("Bolas restantes: %d", pelotas), 675, 100, 30, RED);
+	DrawText(TextFormat("Puntuacion: %d", score), 675, 150, 30, DARKGREEN);
+
+	if (pelotas == 0)
+	{
+		DestroyAllEntities();
+
+		DrawText("GAME OVER", 250, 400, 80, RED);
+
+		if (IsKeyPressed(KEY_ENTER))
+		{
+			pelotas = 3;
+			score = 0;
+
+
+		}
+	}
+	DrawLine(213, 461, 262, 461, GREEN);
 
 	// ray -----------------
 	if (ray_on == true)
@@ -285,22 +302,7 @@ update_status ModuleGame::Update()
 		}
 	}
 
-	DrawText(TextFormat("Bolas restantes: %d", pelotas), 675, 100, 30, RED);
-	DrawText(TextFormat("Puntuacion: %d", score), 675, 150, 30, DARKGREEN);
-
-	if (pelotas == 0)
-	{
-		DrawText("GAME OVER", 60, 100, 60, RED);
-
-		if (IsKeyPressed(KEY_ENTER))
-		{
-			pelotas = 3;
-			score = 0;
-
-			DestroyAllEntities();
-		}
-	}
-	DrawLine(213, 461, 262, 461, GREEN);
+	
 
 	return UPDATE_CONTINUE;
 }
