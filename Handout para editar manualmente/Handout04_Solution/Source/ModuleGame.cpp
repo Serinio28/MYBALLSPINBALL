@@ -90,6 +90,29 @@ private:
 	Texture2D texture;
 };
 
+class Bumper : public PhysicEntity
+{
+public:
+	Bumper(ModulePhysics* physics, int _x, int _y, Texture2D _texture)
+		: PhysicEntity(physics->CreateCircle(_x, _y, 25))
+		, texture(_texture)
+	{
+
+	}
+
+	void Update() override
+	{
+		int x, y;
+		body->GetPosition(x, y);
+		
+		DrawCircle(x, y, 20, RED);
+	}
+
+private:
+	Texture2D texture;
+};
+
+
 class Muro : public PhysicEntity
 {
 public:
@@ -134,11 +157,7 @@ public:
 		Color tint = body->Contains(GetMouseX(), GetMouseY()) ? RED : WHITE;
 
 		DrawTextureEx(texture, Vector2{ (float)x, (float)y }, body->GetRotation() * RAD2DEG, 1.0f, tint);
-		for (int i = 0; i < 42; i++) 
-		{
-			DrawLineEx({ (float)muro[i], (float)muro[i + 1] }, { (float)muro[i + 2], (float)muro[i + 3] }, 10, RED);
-			i++;
-		}
+		
 	}
 
 private:
@@ -176,6 +195,7 @@ bool ModuleGame::Start()
 
 
 	entities.push_back(new Muro(App->physics, 0, 0, rick));
+	entities.push_back(new Bumper(App->physics, 50, , BackG));
 
 
 	return ret;
@@ -338,6 +358,8 @@ void ModuleGame::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 		}
 		
 	}
+
+
 
 	if (bodyB == sensor)
 		return;
