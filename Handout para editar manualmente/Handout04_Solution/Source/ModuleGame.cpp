@@ -94,7 +94,7 @@ class Bumper : public PhysicEntity
 {
 public:
 	Bumper(ModulePhysics* physics, int _x, int _y, Texture2D _texture)
-		: PhysicEntity(physics->CreateCircle(_x, _y, 25))
+		: PhysicEntity(physics->CreateBumper(_x, _y, 25))
 		, texture(_texture)
 	{
 
@@ -195,7 +195,7 @@ bool ModuleGame::Start()
 
 
 	entities.push_back(new Muro(App->physics, 0, 0, rick));
-	entities.push_back(new Bumper(App->physics, 50, , BackG));
+	entities.push_back(new Bumper(App->physics, 50, 60, BackG));
 
 
 	return ret;
