@@ -226,9 +226,9 @@ update_status ModuleGame::Update()
 		entities.push_back(new Box(App->physics, GetMouseX(), GetMouseY(), box));
 	}
 
-	if (IsKeyPressed(KEY_FOUR))
+	if (!WindowShouldClose())
 	{
-		entities.push_back(new Rick(App->physics, GetMouseX(), GetMouseY(), rick));
+		entities.push_back(new Rick(App->physics, 0, 0, rick));
 	}
 
 	if (IsKeyPressed(KEY_BACKSPACE))
