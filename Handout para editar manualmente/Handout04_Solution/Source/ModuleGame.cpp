@@ -189,6 +189,8 @@ bool ModuleGame::Start()
 	circle = LoadTexture("Assets/wheel.png");
 	box = LoadTexture("Assets/crate.png");
 	rick = LoadTexture("Assets/rick_head.png");
+	Music smusic = LoadMusicStream("STEEL_BALL_RUN_THEME.mp3");
+	Sound music = LoadSound("STEEL_BALL_RUN_THEME.mp3");
 	
 	bonus_fx = App->audio->LoadFx("Assets/bonus.wav");
 
@@ -202,7 +204,7 @@ bool ModuleGame::Start()
 	entities.push_back(new Bumper(App->physics, 450, 600, BackG));
 	entities.push_back(new Bumper(App->physics, 550, 250, BackG));
 	entities.push_back(new Bumper(App->physics, 190, 650, BackG));
-
+	PlaySound(music);
 
 	return ret;
 }
