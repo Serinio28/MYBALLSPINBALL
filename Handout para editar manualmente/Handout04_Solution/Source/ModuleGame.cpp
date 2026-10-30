@@ -134,10 +134,10 @@ public:
 		Color tint = body->Contains(GetMouseX(), GetMouseY()) ? RED : WHITE;
 
 		DrawTextureEx(texture, Vector2{ (float)x, (float)y }, body->GetRotation() * RAD2DEG, 1.0f, tint);
-		for (int i = 0; i < 44; i += 2) 
+		for (int i = 0; i < 44; i++) 
 		{
 			DrawLineEx({ (float)muro[i], (float)muro[i + 1] }, { (float)muro[i + 2], (float)muro[i + 3] }, 10, RED);
-
+			i++;
 		}
 	}
 
@@ -285,7 +285,6 @@ update_status ModuleGame::Update()
 
 	if (pelotas == 0)
 	{
-		DestroyAllEntities();
 
 		DrawText("GAME OVER", 250, 400, 80, RED);
 
