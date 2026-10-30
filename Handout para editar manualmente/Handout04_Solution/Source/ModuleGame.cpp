@@ -105,7 +105,8 @@ public:
 		int x, y;
 		body->GetPosition(x, y);
 		
-		DrawCircle(x, y, 20, RED);
+		DrawCircle(x, y, 30, RED);
+		DrawCircle(x, y, 20, ORANGE);
 	}
 
 private:
