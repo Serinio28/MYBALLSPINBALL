@@ -8,6 +8,7 @@
 #include <algorithm>
 
 int pelotas = 3;
+int score = 0;
 
 
 
@@ -89,11 +90,11 @@ private:
 	Texture2D texture;
 };
 
-class Rick : public PhysicEntity
+class Muro : public PhysicEntity
 {
 public:
 	// Pivot 0, 0
-	static constexpr int rick_head[44] = {
+	static constexpr int muro[44] = {
 		213, 461,
 		262, 461,
 		280, 447,
@@ -118,8 +119,8 @@ public:
 		89, 461
 	};
 
-	Rick(ModulePhysics* physics, int _x, int _y, Texture2D _texture)
-		: PhysicEntity(physics->CreateChain(_x, _y, rick_head, 44))
+	Muro(ModulePhysics* physics, int _x, int _y, Texture2D _texture)
+		: PhysicEntity(physics->CreateChain(_x, _y, muro, 44))
 		, texture(_texture)
 	{
 
@@ -228,7 +229,7 @@ update_status ModuleGame::Update()
 
 	if (!WindowShouldClose())
 	{
-		entities.push_back(new Rick(App->physics, 0, 0, rick));
+		entities.push_back(new Muro(App->physics, 0, 0, rick));
 	}
 
 	if (IsKeyPressed(KEY_BACKSPACE))
@@ -244,6 +245,11 @@ update_status ModuleGame::Update()
 	int ray_hit = ray.DistanceTo(mouse);
 
 	vec2f normal(0.0f, 0.0f);
+
+
+
+
+
 
 	// All draw functions ------------------------------------------------------
 
@@ -279,18 +285,29 @@ update_status ModuleGame::Update()
 		}
 	}
 
-	DrawText(TextFormat("Bolas restantes: %d", pelotas), 60, 100, 40, RED);
+	DrawText(TextFormat("Bolas restantes: %d", pelotas), 675, 100, 30, RED);
+	DrawText(TextFormat("Puntuacion: %d", score), 675, 150, 30, DARKGREEN);
 
 	if (pelotas == 0)
 	{
 		DrawText("GAME OVER", 60, 100, 60, RED);
 
+		if (IsKeyPressed(KEY_ENTER))
+		{
+			pelotas = 3;
+			score = 0;
 
+			DestroyAllEntities();
+		}
 	}
-
+	DrawLine(213, 461, 262, 461, GREEN);
 
 	return UPDATE_CONTINUE;
 }
+
+
+
+
 
 // Circles play bonus_fx when they collide
 void ModuleGame::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
@@ -316,6 +333,8 @@ void ModuleGame::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 
 	App->audio->PlayFx(bonus_fx);
 }
+
+
 
 
 
