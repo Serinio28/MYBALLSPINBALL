@@ -248,7 +248,7 @@ update_status ModuleGame::Update()
 		ray.y = GetMouseY();
 	}
 
-	if (IsKeyPressed(KEY_ONE))
+	if (IsKeyPressed(KEY_ONE) && pelotas>0)
 	{
 		Circle* c = new Circle(App->physics, GetMouseX(), GetMouseY(), circle);
 		c->body->listener = this;
@@ -307,10 +307,11 @@ update_status ModuleGame::Update()
 	DrawText(TextFormat("Bolas restantes: %d", pelotas), 675, 100, 30, RED);
 	DrawText(TextFormat("Puntuacion: %d", score), 675, 150, 30, DARKGREEN);
 
-	if (pelotas == 0)
+	if (pelotas <= 0)
 	{
 		DrawRectangle(0, 0, 1000, 1000, BLACK);
 		DrawText("GAME OVER", 250, 400, 80, RED);
+		DrawText("Presiona enter para volver a empezar", 60, 500, 45, WHITE);
 
 		if (IsKeyPressed(KEY_ENTER))
 		{
