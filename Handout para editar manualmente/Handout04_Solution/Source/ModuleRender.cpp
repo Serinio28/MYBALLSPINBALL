@@ -22,6 +22,8 @@ bool ModuleRender::Init()
 	return ret;
 }
 
+
+
 // PreUpdate: clear buffer
 update_status ModuleRender::PreUpdate()
 {
