@@ -94,8 +94,9 @@ class Muro : public PhysicEntity
 {
 public:
 	// Pivot 0, 0
-	static constexpr int muro[42] = {
+	static constexpr int muro[44] = {
 		10, 320,
+		10, 321,
 		10, 780,
 		220, 1000,
 		220, 1100,
