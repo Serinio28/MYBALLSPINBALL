@@ -119,7 +119,7 @@ public:
 	};
 
 	Muro(ModulePhysics* physics, int _x, int _y, Texture2D _texture)
-		: PhysicEntity(physics->CreateChain(_x, _y, muro, 44))
+		: PhysicEntity(physics->CreateChain(_x, _y, muro, 42))
 		, texture(_texture)
 	{
 
@@ -134,7 +134,7 @@ public:
 		Color tint = body->Contains(GetMouseX(), GetMouseY()) ? RED : WHITE;
 
 		DrawTextureEx(texture, Vector2{ (float)x, (float)y }, body->GetRotation() * RAD2DEG, 1.0f, tint);
-		for (int i = 0; i < 44; i++) 
+		for (int i = 0; i < 42; i++) 
 		{
 			DrawLineEx({ (float)muro[i], (float)muro[i + 1] }, { (float)muro[i + 2], (float)muro[i + 3] }, 10, RED);
 			i++;
