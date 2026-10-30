@@ -309,7 +309,7 @@ update_status ModuleGame::Update()
 
 	if (pelotas == 0)
 	{
-
+		DrawRectangle(0, 0, 1000, 1000, BLACK);
 		DrawText("GAME OVER", 250, 400, 80, RED);
 
 		if (IsKeyPressed(KEY_ENTER))
