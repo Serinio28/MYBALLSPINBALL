@@ -135,6 +135,11 @@ public:
 		Color tint = body->Contains(GetMouseX(), GetMouseY()) ? RED : WHITE;
 
 		DrawTextureEx(texture, Vector2{ (float)x, (float)y }, body->GetRotation() * RAD2DEG, 1.0f, tint);
+		for (int i = 0; i < 44; i += 2) 
+		{
+			DrawLineEx({ (float)muro[i], (float)muro[i + 1] }, { (float)muro[i + 2], (float)muro[i + 3] }, 10, RED);
+
+		}
 	}
 
 private:
@@ -169,6 +174,10 @@ bool ModuleGame::Start()
 	// Sensor at the bottom of the screen
 	sensor = App->physics->CreateRectangleSensor(SCREEN_WIDTH , SCREEN_HEIGHT*1.5, SCREEN_WIDTH , 50);
 	sensor->listener = this;
+
+
+	entities.push_back(new Muro(App->physics, 0, 0, rick));
+
 
 	return ret;
 }
@@ -284,11 +293,9 @@ update_status ModuleGame::Update()
 		{
 			pelotas = 3;
 			score = 0;
-
-
 		}
 	}
-	DrawLine(213, 461, 262, 461, GREEN);
+	
 
 	// ray -----------------
 	if (ray_on == true)
