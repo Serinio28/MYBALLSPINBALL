@@ -251,6 +251,7 @@ update_status ModuleGame::Update()
 	// All draw functions ------------------------------------------------------
 	ClearBackground(BLACK);
 	DrawRectangle(0, 0, 1000, 1000, BLACK);
+	DrawRectangle(0, 10, 990, 980, DARKGRAY);
 	DrawTexture(rick, 0, 0, WHITE);
 	
 
