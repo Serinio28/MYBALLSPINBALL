@@ -361,3 +361,11 @@ void ModuleGame::DestroyAllEntities()
 	entities.clear();
 	bodies_to_destroy.clear();
 }
+
+
+
+
+/* Spin
+	if (IsKeyDown(KEY_E)) ball->body->ApplyAngularImpulse(10, true);
+	if (IsKeyDown(KEY_Q)) ball->body->ApplyAngularImpulse(-10, true);
+*/
