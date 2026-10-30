@@ -7,6 +7,11 @@
 
 #include <algorithm>
 
+int pelotas = 3;
+
+
+
+
 // Base class for everything in the scene that has a physics body
 class PhysicEntity
 {
@@ -84,77 +89,37 @@ private:
 	Texture2D texture;
 };
 
-class Chain : public PhysicEntity
-{
-public:
-	static constexpr int points[24] = {
-		-38, 80,
-		-44, -54,
-		-16, -60,
-		-16, -17,
-		19, -19,
-		19, -79,
-		61, -77,
-		57, 73,
-		17, 78,
-		20, 16,
-		-25, 13,
-		-9, 72
-	};
-
-	Chain(ModulePhysics* physics, int _x, int _y)
-		: PhysicEntity(physics->CreateChain(_x, _y, points, 24))
-	{
-
-	}
-
-	void Update() override
-	{
-		// No texture: press F1 to see it
-	}
-};
-
 class Rick : public PhysicEntity
 {
 public:
 	// Pivot 0, 0
-	static constexpr int rick_head[64] = {
-		14, 36,
-		42, 40,
-		40, 0,
-		75, 30,
-		88, 4,
-		94, 39,
-		111, 36,
-		104, 58,
-		107, 62,
-		117, 67,
-		109, 73,
-		110, 85,
-		106, 91,
-		109, 99,
-		103, 104,
-		100, 115,
-		106, 121,
-		103, 125,
-		98, 126,
-		95, 137,
-		83, 147,
-		67, 147,
-		53, 140,
-		46, 132,
-		34, 136,
-		38, 126,
-		23, 123,
-		30, 114,
-		10, 102,
-		29, 90,
-		0, 75,
-		30, 62
+	static constexpr int rick_head[44] = {
+		213, 461,
+		262, 461,
+		280, 447,
+		295, 428,
+		301, 412,
+		304, 400,
+		304, 66,
+		297, 44,
+		290, 28,
+		280, 19,
+		261, 8,
+		47, 8,
+		30, 19,
+		15, 37,
+		5, 59,
+		5, 399,
+		9, 418,
+		16, 433,
+		23, 446,
+		38, 457,
+		50, 461,
+		89, 461
 	};
 
 	Rick(ModulePhysics* physics, int _x, int _y, Texture2D _texture)
-		: PhysicEntity(physics->CreateChain(_x, _y, rick_head, 64))
+		: PhysicEntity(physics->CreateChain(_x, _y, rick_head, 44))
 		, texture(_texture)
 	{
 
@@ -259,11 +224,6 @@ update_status ModuleGame::Update()
 		entities.push_back(new Box(App->physics, GetMouseX(), GetMouseY(), box));
 	}
 
-	if (IsKeyPressed(KEY_THREE))
-	{
-		entities.push_back(new Chain(App->physics, GetMouseX(), GetMouseY()));
-	}
-
 	if (IsKeyPressed(KEY_FOUR))
 	{
 		entities.push_back(new Rick(App->physics, GetMouseX(), GetMouseY(), rick));
@@ -317,6 +277,16 @@ update_status ModuleGame::Update()
 		}
 	}
 
+	DrawText(TextFormat("Bolas restantes: %d", pelotas), 60, 100, 40, RED);
+
+	if (pelotas == 0)
+	{
+		DrawText("GAME OVER", 60, 100, 60, RED);
+
+
+	}
+
+
 	return UPDATE_CONTINUE;
 }
 
@@ -328,9 +298,15 @@ void ModuleGame::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 	{
 		// Never destroy bodies inside a collision callback: the world is locked
 		// Keep them in a list and destroy them in Update()
-		if (bodyB != NULL && std::find(bodies_to_destroy.begin(), bodies_to_destroy.end(), bodyB) == bodies_to_destroy.end())
+		if (bodyB != NULL && std::find(bodies_to_destroy.begin(), bodies_to_destroy.end(), bodyB) == bodies_to_destroy.end()) 
+		{
+
 			bodies_to_destroy.push_back(bodyB);
-		return;
+			--pelotas;
+			return;
+
+		}
+		
 	}
 
 	if (bodyB == sensor)
@@ -338,6 +314,9 @@ void ModuleGame::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 
 	App->audio->PlayFx(bonus_fx);
 }
+
+
+
 
 void ModuleGame::DestroyEntity(PhysicEntity* entity)
 {
