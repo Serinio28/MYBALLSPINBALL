@@ -37,7 +37,7 @@ bool ModuleWindow::Init()
     LOG("Init raylib window");
 
     SetConfigFlags(flags);
-	InitWindow(width, height, TITLE);
+	InitWindow(670, 1000, TITLE);
 
 	return ret;
 }
