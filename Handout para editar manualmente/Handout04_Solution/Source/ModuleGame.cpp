@@ -249,7 +249,10 @@ update_status ModuleGame::Update()
 
 
 	// All draw functions ------------------------------------------------------
+	ClearBackground(BLACK);
+	DrawRectangle(0, 0, 1000, 1000, BLACK);
 	DrawTexture(rick, 0, 0, WHITE);
+	
 
 	for (PhysicEntity* entity : entities)
 	{
