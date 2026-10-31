@@ -112,7 +112,7 @@ class Fliper : public PhysicEntity
 {
 public:
 	Fliper(ModulePhysics* physics, int _x, int _y, bool left)
-		: PhysicEntity(physics->CreateFlipper(_x, _y, 92, 10, left))
+		: PhysicEntity(physics->CreateFlipper(_x, _y, 80, 10, left))
 	{
 
 	}
@@ -140,7 +140,7 @@ public:
 		}
 
 
-		DrawRectanglePro({ (float)x, (float)y, 92*2, 10*2 }, {92, 10}, r, RED);
+		DrawRectanglePro({ (float)x, (float)y, 80*2, 10*2 }, {80, 10}, r, RED);
 	}
 
 private:
