@@ -410,6 +410,7 @@ void ModuleGame::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 		bodyA->body->SetLinearVelocity(40 * boom);
 		//bodyA->body->SetLinearVelocity({ 0, 0 });
 		//bodyA->body->ApplyLinearImpulseToCenter(30*boom, true);
+		score += 100;
 	}
 
 	if (bodyB == sensor) return;
