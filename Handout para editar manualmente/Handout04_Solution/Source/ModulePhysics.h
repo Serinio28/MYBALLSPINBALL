@@ -48,7 +48,7 @@ public:
 	bool CleanUp();
 
 	PhysBody* CreateCircle(int x, int y, int radius);
-	PhysBody* CreateRectangle(int x, int y, int half_width, int half_height);
+	PhysBody* CreateFlipper(int x, int y, int half_width, int half_height, bool left);
 	PhysBody* CreateRectangleSensor(int x, int y, int half_width, int half_height);
 	PhysBody* CreateChain(int x, int y, const int* points, int size);
 	PhysBody* CreateBumper(int x, int y, int radius);

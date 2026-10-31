@@ -68,12 +68,6 @@ private:
 class Box : public PhysicEntity
 {
 public:
-	Box(ModulePhysics* physics, int _x, int _y, Texture2D _texture)
-		: PhysicEntity(physics->CreateRectangle(_x, _y, 50, 25))
-		, texture(_texture)
-	{
-
-	}
 
 	void Update() override
 	{
@@ -114,6 +108,43 @@ public:
 private:
 	Texture2D texture;
 };
+class Fliper : public PhysicEntity
+{
+public:
+	Fliper(ModulePhysics* physics, int _x, int _y, bool left)
+		: PhysicEntity(physics->CreateFlipper(_x, _y, 92, 10, left))
+	{
+
+	}
+
+	void Update() override
+	{
+		int x, y;
+		body->GetPosition(x, y);
+		float r = body->GetRotation() * RAD2DEG;
+		
+		if (x > 300)
+		{
+			if (IsKeyDown(KEY_RIGHT)) {
+			
+				body->body->ApplyAngularImpulse(50000, true);
+			}	
+		}
+
+		if (x < 300)
+		{
+			if (IsKeyDown(KEY_LEFT)) {
+
+				body->body->ApplyAngularImpulse(-50000, true);
+			}
+		}
+
+
+		DrawRectanglePro({ (float)x, (float)y, 92*2, 10*2 }, {92, 10}, r, RED);
+	}
+
+private:
+};
 
 
 class Muro : public PhysicEntity
@@ -122,12 +153,12 @@ public:
 	// Pivot 0, 0
 	static constexpr int muro[42] = {
 		10, 320,
-		10, 780,
-		220, 1000,
+		10, 727,
+		220, 946,
 		220, 1100,
 		450, 1100,
-		450, 1000,
-		660, 780,
+		450, 946,
+		660, 727,
 		660, 320,
 		649, 250,
 		623, 184,
@@ -197,9 +228,14 @@ bool ModuleGame::Start()
 	// Sensor at the bottom of the screen
 	sensor = App->physics->CreateRectangleSensor(SCREEN_WIDTH , SCREEN_HEIGHT*1.5, SCREEN_WIDTH , 50);
 	sensor->listener = this;
+	//PhysBody* leftFlipper = App->physics->CreateFlipper(225, 915, 93, 10, true);
+	//PhysBody* rightFlipper = App->physics->CreateFlipper(455, 915, 93, 10, false);
+
 
 
 	entities.push_back(new Muro(App->physics, 0, 0, rick));
+	entities.push_back(new Fliper(App->physics, 240, 915, true));
+	entities.push_back(new Fliper(App->physics, 440, 915, false));
 	entities.push_back(new Bumper(App->physics, 150, 250, BackG));
 	entities.push_back(new Bumper(App->physics, 450, 600, BackG));
 	entities.push_back(new Bumper(App->physics, 550, 250, BackG));
@@ -261,7 +297,7 @@ update_status ModuleGame::Update()
 
 	if (IsKeyPressed(KEY_E))
 	{
-		
+
 	}
 
 
@@ -403,11 +439,3 @@ void ModuleGame::DestroyAllEntities()
 	entities.clear();
 	bodies_to_destroy.clear();
 }
-
-
-
-
-/* Spin
-	if (IsKeyDown(KEY_E)) ball->body->ApplyAngularImpulse(10, true);
-	if (IsKeyDown(KEY_Q)) ball->body->ApplyAngularImpulse(-10, true);
-*/
