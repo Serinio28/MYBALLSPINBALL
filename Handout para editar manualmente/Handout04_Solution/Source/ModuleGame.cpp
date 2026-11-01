@@ -62,6 +62,8 @@ public:
 		if (IsKeyDown(KEY_E)) body->body->ApplyAngularImpulse(10, true);
 		if (IsKeyDown(KEY_Q)) body->body->ApplyAngularImpulse(-10, true);
 		if (y < 300) start = false;
+		if (IsKeyPressed(KEY_ONE) && body->body->GetGravityScale() > 0) body->body->SetGravityScale(body->body->GetGravityScale() - 1); //default = 10
+		if (IsKeyPressed(KEY_ONE) && body->body->GetGravityScale() < 20) body->body->SetGravityScale(body->body->GetGravityScale() + 1);
 	}
 
 private:
@@ -365,12 +367,6 @@ update_status ModuleGame::Update()
 		entities.push_back(c);
 		startball = true;
 	}
-
-	if (IsKeyPressed(KEY_E))
-	{
-
-	}
-
 
 	if (IsKeyPressed(KEY_BACKSPACE))
 	{
