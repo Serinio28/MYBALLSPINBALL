@@ -49,6 +49,7 @@ public:
 
 	PhysBody* CreateCircle(int x, int y, int radius);
 	PhysBody* CreateFlipper(int x, int y, int half_width, int half_height, bool left);
+	PhysBody* CreateKicker(int x, int y, int half_width, int half_height);
 	PhysBody* CreateRectangleSensor(int x, int y, int half_width, int half_height);
 	PhysBody* CreateChain(int x, int y, const int* points, int size);
 	PhysBody* CreateBumper(int x, int y, int radius);

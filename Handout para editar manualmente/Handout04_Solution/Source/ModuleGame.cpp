@@ -8,6 +8,8 @@
 #include <algorithm>
 
 int pelotas = 3;
+bool start = true;
+bool startball = false;
 int score = 0;
 
 
@@ -59,6 +61,7 @@ public:
 		DrawTexturePro(texture, source, dest, origin, body->GetRotation() * RAD2DEG, tint);
 		if (IsKeyDown(KEY_E)) body->body->ApplyAngularImpulse(10, true);
 		if (IsKeyDown(KEY_Q)) body->body->ApplyAngularImpulse(-10, true);
+		if (y < 300) start = false;
 	}
 
 private:
@@ -122,7 +125,6 @@ public:
 		int x, y;
 		body->GetPosition(x, y);
 		float r = body->GetRotation() * RAD2DEG;
-		
 		if (x > 300)
 		{
 			if (IsKeyDown(KEY_RIGHT)) {
@@ -141,6 +143,36 @@ public:
 
 
 		DrawRectanglePro({ (float)x, (float)y, 80*2, 10*2 }, {80, 10}, r, RED);
+	}
+
+private:
+};
+class Kicker : public PhysicEntity
+{
+public:
+	float force = 0;
+	bool impact = false;
+	Kicker(ModulePhysics* physics, int _x, int _y)
+		: PhysicEntity(physics->CreateKicker(_x, _y, 30, 10))
+	{
+
+	}
+
+	void Update() override
+	{
+		int x, y;
+		body->GetPosition(x, y);
+
+		if (IsKeyDown(KEY_DOWN)) {
+			if (y<900)body->body->ApplyForceToCenter({ 0, 150 }, true), force++;
+			else body->body->SetLinearVelocity({ 0, 0 });
+		}
+		else body->body->ApplyLinearImpulseToCenter({ 0, -10 * force }, true);
+		if (y < 700) body->body->SetLinearVelocity({ 0, 10 }), impact = true, force = 0;
+		if (y >= 800 && impact) body->body->SetLinearVelocity({ 0, 0 }), impact = false;
+		if (start) DrawRectanglePro({ (float)x, (float)y, 30 * 2, 10 * 2 }, { 30, 10 }, 0, BLUE);
+		body->body->SetEnabled(start);
+
 	}
 
 private:
@@ -197,6 +229,41 @@ public:
 private:
 	Texture2D texture;
 };
+class Muro2 : public PhysicEntity
+{
+public:
+	// Pivot 0, 0
+	static constexpr int st[8] = {
+		580, 300,
+		600, 300,
+		600, 820,
+		580, 820
+	};
+
+	Muro2(ModulePhysics* physics, int _x, int _y, Texture2D _texture)
+		: PhysicEntity(physics->CreateChain(_x, _y, st, 8))
+		, texture(_texture)
+	{
+
+	}
+
+	void Update() override
+	{
+		int x, y;
+		body->GetPosition(x, y);
+
+		// Chains have no volume: Contains() is never true for them
+		Color tint = body->Contains(GetMouseX(), GetMouseY()) ? RED : WHITE;
+
+		DrawTextureEx(texture, Vector2{ (float)x, (float)y }, body->GetRotation() * RAD2DEG, 1.0f, tint);
+		if (start) DrawRectangle(580, 300, 20, 520, BLACK); 		
+		body->body->SetEnabled(start);
+
+	}
+
+private:
+	Texture2D texture;
+};
 
 ModuleGame::ModuleGame(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -234,12 +301,15 @@ bool ModuleGame::Start()
 
 
 	entities.push_back(new Muro(App->physics, 0, 0, rick));
+	entities.push_back(new Muro2(App->physics, 0, 0, rick));
 	entities.push_back(new Fliper(App->physics, 240, 915, true));
 	entities.push_back(new Fliper(App->physics, 440, 915, false));
+	entities.push_back(new Kicker(App->physics, 630, 800));
 	entities.push_back(new Bumper(App->physics, 150, 250, BackG));
 	entities.push_back(new Bumper(App->physics, 450, 600, BackG));
 	entities.push_back(new Bumper(App->physics, 550, 250, BackG));
 	entities.push_back(new Bumper(App->physics, 190, 650, BackG));
+
 	PlaySound(music);
 
 	return ret;
@@ -288,11 +358,12 @@ update_status ModuleGame::Update()
 		ray.y = GetMouseY();
 	}
 
-	if (IsKeyPressed(KEY_ONE) && pelotas>0)
+	if (start && pelotas>0 && !startball)
 	{
-		Circle* c = new Circle(App->physics, GetMouseX(), GetMouseY(), circle);
+		Circle* c = new Circle(App->physics, 620, 700, circle);
 		c->body->listener = this;
 		entities.push_back(c);
+		startball = true;
 	}
 
 	if (IsKeyPressed(KEY_E))
@@ -398,6 +469,8 @@ void ModuleGame::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 
 			bodies_to_destroy.push_back(bodyB);
 			--pelotas;
+			start = true;
+			startball = false;
 			return;
 
 		}

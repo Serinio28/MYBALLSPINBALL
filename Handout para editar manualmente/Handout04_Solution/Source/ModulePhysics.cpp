@@ -255,7 +255,6 @@ PhysBody* ModulePhysics::CreateFlipper(int x, int y, int width, int height, bool
 {
 	PhysBody* pbody = new PhysBody();
 
-	// Create dynamic body
 	b2BodyDef body;
 	body.type = b2_dynamicBody;
 	body.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
@@ -264,7 +263,6 @@ PhysBody* ModulePhysics::CreateFlipper(int x, int y, int width, int height, bool
 
 	b2Body* b = world->CreateBody(&body);
 
-	// Flipper shape
 	b2PolygonShape box;
 	box.SetAsBox(
 		PIXEL_TO_METERS(width),
@@ -294,7 +292,6 @@ PhysBody* ModulePhysics::CreateFlipper(int x, int y, int width, int height, bool
 		
 	}
 	b2Body* pivot = world->CreateBody(&pivotDef);
-	// Revolute joint
 	b2RevoluteJointDef jointDef;
 	jointDef.Initialize(pivot, b, pivot->GetPosition());
 	jointDef.enableLimit = true;
@@ -306,7 +303,38 @@ PhysBody* ModulePhysics::CreateFlipper(int x, int y, int width, int height, bool
 
 	return pbody;
 }
+PhysBody* ModulePhysics::CreateKicker(int x, int y, int width, int height)
+{
+	PhysBody* pbody = new PhysBody();
 
+	b2BodyDef body;
+	body.type = b2_dynamicBody;
+	body.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
+	body.userData.pointer = reinterpret_cast<uintptr_t>(pbody);
+	body.gravityScale = 0;
+	body.fixedRotation = true;
+
+	b2Body* b = world->CreateBody(&body);
+
+	b2PolygonShape box;
+	box.SetAsBox(
+		PIXEL_TO_METERS(width),
+		PIXEL_TO_METERS(height)
+	);
+
+	b2FixtureDef fixture;
+	fixture.shape = &box;
+	fixture.density = 1000.0f;
+	fixture.friction = 0.3f;
+	fixture.restitution = 0.5f;
+	fixture.filter.groupIndex = -1;
+
+	b->CreateFixture(&fixture);
+
+	pbody->body = b;
+
+	return pbody;
+}
 // Static box that detects overlaps but does not collide (a trigger)
 PhysBody* ModulePhysics::CreateRectangleSensor(int x, int y, int half_width, int half_height)
 {
