@@ -436,8 +436,8 @@ update_status ModuleGame::Update()
 	
 	DrawText(TextFormat("Bolas restantes: %d", pelotas), 675, 100, 30, RED);
 	DrawText(TextFormat("Puntuacion: %d", score), 675, 150, 30, WHITE);
-	DrawText(TextFormat("Puntuacion de la \npartida anterior: %d", previous_Score), 675, 400, 30, WHITE);
-	DrawText(TextFormat("Puntuacion Maxima: %d", highScore), 672, 350, 30, YELLOW);
+	DrawText(TextFormat("Puntuacion de la \npartida anterior: \n %d", previous_Score), 675, 350, 30, WHITE);
+	DrawText(TextFormat("Puntuacion Maxima: \n %d", highScore), 675, 450, 30, YELLOW);
 
 	if (pelotas <= 0)
 	{
