@@ -235,6 +235,7 @@ PhysBody* ModulePhysics::CreateBumper(int x, int y, int radius)
 	body.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
 	body.userData.pointer = reinterpret_cast<uintptr_t>(pbody);
 	body.gravityScale = 69;
+	body.fixedRotation = false;
 
 	b2Body* b = world->CreateBody(&body);
 

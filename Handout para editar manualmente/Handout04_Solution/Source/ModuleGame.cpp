@@ -94,6 +94,7 @@ private:
 class Bumper : public PhysicEntity
 {
 public:
+	int t;
 	Bumper(ModulePhysics* physics, int _x, int _y, Texture2D _texture)
 		: PhysicEntity(physics->CreateBumper(_x, _y, 40))
 		, texture(_texture)
@@ -105,9 +106,20 @@ public:
 	{
 		int x, y;
 		body->GetPosition(x, y);
-		
-		DrawCircle(x, y, 40, RED);
-		DrawCircle(x, y, 30, ORANGE);
+		Color color1 = RED;
+		Color color2 = BLACK;
+		if (!body->body->IsFixedRotation()) {
+			DrawCircle(x, y, 40, color1);
+			DrawCircle(x, y, 30, color2);
+			t = 8;
+		}
+		else {
+			DrawCircle(x, y, 50, color1);
+			DrawCircle(x, y, 40, color2);
+			DrawCircle(x, y, 30, color1);
+			t--;
+		}
+		if (t == 0) body->body->SetFixedRotation(false);
 	}
 
 private:
@@ -166,7 +178,7 @@ public:
 		body->GetPosition(x, y);
 
 		if (IsKeyDown(KEY_DOWN)) {
-			if (y<900)body->body->ApplyForceToCenter({ 0, 150 }, true), force++;
+			if (y<900)body->body->ApplyForceToCenter({ 0, 300 }, true), force += 2;
 			else body->body->SetLinearVelocity({ 0, 0 });
 		}
 		else body->body->ApplyLinearImpulseToCenter({ 0, -10 * force }, true);
@@ -480,6 +492,7 @@ void ModuleGame::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 		//bodyA->body->SetLinearVelocity({ 0, 0 });
 		//bodyA->body->ApplyLinearImpulseToCenter(30*boom, true);
 		score += 100;
+		bodyB->body->SetFixedRotation(true);
 	}
 
 	if (bodyB == sensor) return;
