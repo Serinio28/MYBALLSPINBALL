@@ -119,7 +119,7 @@ public:
 			DrawCircle(x, y, 40, color2);
 			DrawCircle(x, y, 30, color1);
 			t--;
-			if (t == 0) body->body->SetFixedRotation(false);
+			if (t <= 0) body->body->SetFixedRotation(false);
 		}
 	}
 
