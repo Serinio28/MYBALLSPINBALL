@@ -11,6 +11,7 @@ int pelotas = 3;
 bool start = true;
 bool startball = false;
 int score = 0;
+int fps = 60;
 
 
 
@@ -63,7 +64,12 @@ public:
 		if (IsKeyDown(KEY_Q)) body->body->ApplyAngularImpulse(-10, true);
 		if (y < 300) start = false;
 		if (IsKeyPressed(KEY_ONE) && body->body->GetGravityScale() > 0) body->body->SetGravityScale(body->body->GetGravityScale() - 1); //default = 10
-		if (IsKeyPressed(KEY_ONE) && body->body->GetGravityScale() < 20) body->body->SetGravityScale(body->body->GetGravityScale() + 1);
+		if (IsKeyPressed(KEY_TWO) && body->body->GetGravityScale() < 20) body->body->SetGravityScale(body->body->GetGravityScale() + 1);
+		int g = body->body->GetGravityScale();
+		DrawText(TextFormat("Gravetat: %d", g), 675, 200, 30, DARKGREEN);
+		if (IsKeyPressed(KEY_THREE) && fps > 1) fps--, SetTargetFPS(fps);
+		if (IsKeyPressed(KEY_FOUR) && fps < 60) fps++, SetTargetFPS(fps);
+		DrawText(TextFormat("Target FPS: %d", fps), 675, 250, 30, DARKGREEN);
 	}
 
 private:
