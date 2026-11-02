@@ -11,9 +11,8 @@ int pelotas = 3;
 bool start = true;
 bool startball = false;
 int score = 0;
-int fps = 60;
-int bp = 40;
-
+int highScore = 0;
+int previous_Score = 0;
 
 
 
@@ -65,15 +64,7 @@ public:
 		if (IsKeyDown(KEY_Q)) body->body->ApplyAngularImpulse(-10, true);
 		if (y < 300) start = false;
 		if (IsKeyPressed(KEY_ONE) && body->body->GetGravityScale() > 0) body->body->SetGravityScale(body->body->GetGravityScale() - 1); //default = 10
-		if (IsKeyPressed(KEY_TWO) && body->body->GetGravityScale() < 20) body->body->SetGravityScale(body->body->GetGravityScale() + 1);
-		int g = body->body->GetGravityScale();
-		DrawText(TextFormat("Gravetat: %d", g), 675, 200, 30, DARKGREEN);
-		if (IsKeyPressed(KEY_THREE) && fps > 1) fps--, SetTargetFPS(fps);
-		if (IsKeyPressed(KEY_FOUR) && fps < 60) fps++, SetTargetFPS(fps);
-		DrawText(TextFormat("Target FPS: %d", fps), 675, 250, 30, DARKGREEN);
-		if (IsKeyPressed(KEY_FIVE) && bp > 0) bp--;
-		if (IsKeyPressed(KEY_SIX) && bp < 100) bp++;
-		DrawText(TextFormat("Bumper power: %d", bp), 675, 300, 30, DARKGREEN);
+		if (IsKeyPressed(KEY_ONE) && body->body->GetGravityScale() < 20) body->body->SetGravityScale(body->body->GetGravityScale() + 1);
 	}
 
 private:
@@ -435,16 +426,23 @@ update_status ModuleGame::Update()
 	
 	DrawText(TextFormat("Bolas restantes: %d", pelotas), 675, 100, 30, RED);
 	DrawText(TextFormat("Puntuacion: %d", score), 675, 150, 30, DARKGREEN);
+	DrawText(TextFormat("Puntuacion de la \npartida anterior: %d", previous_Score), 675, 200, 30, WHITE);
+	DrawText(TextFormat("Puntuacion Maxima: %d", highScore), 675, 250, 30, WHITE);
 
 	if (pelotas <= 0)
 	{
 		DrawRectangle(0, 0, 1000, 1000, BLACK);
 		DrawText("GAME OVER", 250, 400, 80, RED);
 		DrawText("Presiona enter para volver a empezar", 60, 500, 45, WHITE);
+		if (score > highScore) 
+		{
+			highScore = score;
+		}
 
 		if (IsKeyPressed(KEY_ENTER))
 		{
 			pelotas = 3;
+			previous_Score = score;
 			score = 0;
 		}
 	}
@@ -498,11 +496,11 @@ void ModuleGame::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 	boom.Normalize();
 	if (bodyB->body->GetGravityScale() == 69)
 	{
-		bodyA->body->SetLinearVelocity(bp * boom);
+		bodyA->body->SetLinearVelocity(40 * boom);
 		//bodyA->body->SetLinearVelocity({ 0, 0 });
-		//bodyA->body->ApplyLinearImpulseToCenter(bp*boom, true);
+		//bodyA->body->ApplyLinearImpulseToCenter(30*boom, true);
 		score += 100;
-		if (!bodyB->body->IsFixedRotation()) bodyB->body->SetFixedRotation(true);
+		bodyB->body->SetFixedRotation(true);
 	}
 
 	if (bodyB == sensor) return;
