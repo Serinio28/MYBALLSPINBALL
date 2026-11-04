@@ -81,27 +81,6 @@ private:
 	Texture2D texture;
 };
 
-class Box : public PhysicEntity
-{
-public:
-
-	void Update() override
-	{
-		int x, y;
-		body->GetPosition(x, y);
-
-		Color tint = body->Contains(GetMouseX(), GetMouseY()) ? RED : WHITE;
-
-		Rectangle source = { 0.0f, 0.0f, (float)texture.width, (float)texture.height };
-		Rectangle dest = { (float)x, (float)y, (float)texture.width, (float)texture.height };
-		Vector2 origin = { (float)texture.width / 2.0f, (float)texture.height / 2.0f };
-		DrawTexturePro(texture, source, dest, origin, body->GetRotation() * RAD2DEG, tint);
-	}
-
-private:
-	Texture2D texture;
-};
-
 class Bumper : public PhysicEntity
 {
 public:
@@ -406,9 +385,6 @@ update_status ModuleGame::Update()
 
 
 
-
-
-
 	// All draw functions ------------------------------------------------------
 	ClearBackground(BLACK);
 	DrawRectangle(0, 0, 1000, 1000, BLACK);
@@ -456,7 +432,6 @@ update_status ModuleGame::Update()
 		}
 	}
 	
-
 	if (score % 10000 == 0 && score > 0) 
 	{
 		pelotas += 1;
