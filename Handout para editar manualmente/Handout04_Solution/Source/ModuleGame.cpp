@@ -457,6 +457,12 @@ update_status ModuleGame::Update()
 	}
 	
 
+	if (score % 10000 == 0 && score > 0) 
+	{
+		pelotas += 1;
+		score += 100;
+	}
+
 	// ray -----------------
 	if (ray_on == true)
 	{
