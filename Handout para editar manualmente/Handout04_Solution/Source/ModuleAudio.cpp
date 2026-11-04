@@ -107,3 +107,13 @@ bool ModuleAudio::PlayFx(unsigned int id, int repeat)
 
 	return ret;
 }
+
+update_status ModuleAudio::Update()
+{
+	if (IsMusicReady(music))
+	{
+		UpdateMusicStream(music);
+	}
+
+	return UPDATE_CONTINUE;
+}
