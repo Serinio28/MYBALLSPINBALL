@@ -495,11 +495,12 @@ void ModuleGame::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 		bodyB->body->SetFixedRotation(true);
 
 		App->audio->PlayFx(AudioBumper);
+		App->audio->PlayFx(bonus_fx);
 	}
 
 	if (bodyB == sensor) return;
 
-	App->audio->PlayFx(bonus_fx);
+	
 }
 
 
