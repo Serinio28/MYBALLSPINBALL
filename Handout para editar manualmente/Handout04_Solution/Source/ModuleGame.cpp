@@ -294,6 +294,9 @@ bool ModuleGame::Start()
 	App->audio->PlayMusic("Assets/STEEL_BALL_RUN_THEME.mp3");
 	
 	bonus_fx = App->audio->LoadFx("Assets/bonus.wav");
+	AudioBumper = App->audio->LoadFx("Assets/shoows.wav");
+	
+
 
 	// Sensor at the bottom of the screen
 	sensor = App->physics->CreateRectangleSensor(SCREEN_WIDTH , SCREEN_HEIGHT*1.5, SCREEN_WIDTH , 50);
@@ -438,6 +441,7 @@ update_status ModuleGame::Update()
 		score += 100;
 	}
 
+
 	// ray -----------------
 	if (ray_on == true)
 	{
@@ -452,8 +456,6 @@ update_status ModuleGame::Update()
 			DrawLine((int)(ray.x + destination.x), (int)(ray.y + destination.y), (int)(ray.x + destination.x + normal.x * 25.0f), (int)(ray.y + destination.y + normal.y * 25.0f), Color{ 100, 255, 100, 255 });
 		}
 	}
-
-	
 
 	return UPDATE_CONTINUE;
 }
@@ -491,15 +493,14 @@ void ModuleGame::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 		//bodyA->body->ApplyLinearImpulseToCenter(bp*boom, true);
 		score += 100;
 		bodyB->body->SetFixedRotation(true);
+
+		App->audio->PlayFx(AudioBumper);
 	}
 
 	if (bodyB == sensor) return;
 
 	App->audio->PlayFx(bonus_fx);
 }
-
-
-
 
 
 

@@ -38,6 +38,7 @@ public:
 	
 
 	uint32 bonus_fx;
+	uint32 AudioBumper;
 
 	vec2<int> ray;
 	bool ray_on;
